@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  web:
+    build: ./inark
+    restart: unless-stopped
+    container_name: django
+    volumes:
+      - static-volume:/home/django/app/static
+      - media-volume:/home/django/app/media
+    expose:
+      - 8000
+
   nginx:
     image: nginx:1.15-alpine
     restart: unless-stopped
@@ -12,6 +22,9 @@ services:
       - "80:80"
       - "443:443"
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - web    
+
   certbot:
     image: certbot/certbot
     restart: unless-stopped
@@ -19,3 +32,6 @@ services:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  postgres_data:
