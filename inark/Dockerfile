@@ -50,7 +50,7 @@ COPY ./requirements.txt ./
 RUN pip install --no-cache-dir -r ./requirements.txt
 
 # Copy project to container
-COPY ./src ./
+COPY ./inark ./
 
 # *install psycopg2 if you don't have it requirements.pip*
 # RUN pip install --no-cache-dir psycopg2
