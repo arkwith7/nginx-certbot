@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     container_name: django
     volumes:
-      - static-volume:/home/django/app/static
-      - media-volume:/home/django/app/media
+      - ./data/static:/home/django/app/static
+      - ./data/media:/home/django/app/media
     expose:
       - 8000
 
